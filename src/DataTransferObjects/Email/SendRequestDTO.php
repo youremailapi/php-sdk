@@ -8,7 +8,9 @@ class SendRequestDTO
     private string $smtpAccount;
     private string $subject;
     private string $to;
-    private ?array $variables;
+    private ?array $variables = null;
+    private ?array $bcc = null;
+    private ?array $replyTo = null;
 
     /**
      * @return string
@@ -135,6 +137,4 @@ class SendRequestDTO
         $this->replyTo = $replyTo;
         return $this;
     }
-    private ?array $bcc;
-    private ?array $replyTo;
 }

@@ -13,7 +13,7 @@ class SendRequest
 
     private string $apikey;
 
-    private string $path = '/mailer';
+    private string $path = 'mailer';
 
     public function __construct(string $apikey)
     {
@@ -22,7 +22,11 @@ class SendRequest
 
     public function send(SendRequestDTO $sendRequestDTO): Response
     {
-        $client = new HttpRequest(Constants::API_BASE_URL);
+        $client = new HttpRequest(Constants::API_BASE_URL, [
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ]
+        ]);
 
         if (!filter_var($sendRequestDTO->getTo(), FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException("Invalid {$sendRequestDTO->getTo()} email");
@@ -35,7 +39,7 @@ class SendRequest
             'to' => $sendRequestDTO->getTo(),
         ];
 
-        if ($sendRequestDTO->getBcc() !== null) {
+        if (null !== $sendRequestDTO->getBcc()) {
             $body['bcc'] = $sendRequestDTO->getBcc();
         }
 
