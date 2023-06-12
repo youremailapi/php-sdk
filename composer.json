@@ -1,0 +1,26 @@
+{
+    "name": "youremailapi/php-sdk",
+    "type": "library",
+    "description": "Library to interact with YourEmailAPI",
+    "homepage": "https://youremailapi.com",
+    "autoload": {
+        "psr-4": {
+            "Youremailapi\\PhpSdk\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Federico Juretich",
+            "email": "fedejuret@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 | ^8.0",
+        "ext-json": "*",
+        "ext-curl": "*",
+        "ext-http": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.2"
+    }
+}
