@@ -3,6 +3,7 @@
     "type": "library",
     "description": "Library to interact with YourEmailAPI",
     "homepage": "https://youremailapi.com",
+    "license": "proprietary",
     "autoload": {
         "psr-4": {
             "Youremailapi\\PhpSdk\\": "src/"
