@@ -1,7 +1,8 @@
 <?php
 
-namespace Email;
+namespace Youremailapi\PhpSdk\Tests\Email;
 
+use Youremailapi\PhpSdk\Tests\Constants;
 use Youremailapi\PhpSdk\Email\SendRequest;
 use PHPUnit\Framework\TestCase;
 use Youremailapi\PhpSdk\DataTransferObjects\Email\SendRequestDTO;
@@ -17,7 +18,7 @@ class SendRequestTest extends TestCase
 
         $this->assertTrue($response->getCode() === 201);
         $this->assertIsArray($data->accepted);
-        $this->assertContains(\Constants::DEFAULT_TO_EMAIL, $data->accepted);
+        $this->assertContains(Constants::DEFAULT_TO_EMAIL, $data->accepted);
 
     }
 
@@ -37,7 +38,7 @@ class SendRequestTest extends TestCase
 
         $this->assertTrue($response->getCode() === 201);
         $this->assertIsArray($data->accepted);
-        $this->assertContains(\Constants::DEFAULT_TO_EMAIL, $data->accepted);
+        $this->assertContains(Constants::DEFAULT_TO_EMAIL, $data->accepted);
 
     }
 
@@ -45,9 +46,9 @@ class SendRequestTest extends TestCase
     private function getDto(): SendRequestDTO
     {
         return (new SendRequestDTO())
-            ->setTemplate(\Constants::DEFAULT_TEMPLATE)
-            ->setSmtpAccount(\Constants::DEFAULT_SMTP_ACCOUNT)
-            ->setTo(\Constants::DEFAULT_TO_EMAIL)
+            ->setTemplate(Constants::DEFAULT_TEMPLATE)
+            ->setSmtpAccount(Constants::DEFAULT_SMTP_ACCOUNT)
+            ->setTo(Constants::DEFAULT_TO_EMAIL)
             ->setSubject('Test Case')
             ->setVariables([
                 '%user_first_name%' => 'Federico',
@@ -57,7 +58,7 @@ class SendRequestTest extends TestCase
 
     private function getRequest(): SendRequest
     {
-        return new SendRequest(\Constants::APIKEY);
+        return new SendRequest(Constants::APIKEY);
     }
 
 }

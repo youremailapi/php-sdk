@@ -1,5 +1,7 @@
 <?php
 
+namespace Youremailapi\PhpSdk\Tests;
+
 class Constants
 {
 
