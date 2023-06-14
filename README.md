@@ -2,7 +2,7 @@
 
 YouremailAPI PHP Sdk is a tool to interact with the [YouremailAPI api](https://youremailapi.com)
 
-To start using the SDK, you must first have an account on the platform (you can make one for free [here](https://youremailapi.com/auth/sign-up)).
+To start using the SDK, you must first have an account on the platform (you can create one for free [here](https://youremailapi.com/auth/sign-up)).
 
 When you already have your account, you will need to upload an SMTP account with which you want to send emails and you will also have to create your first template.
 For more details, we recommend reading this [getting started](https://docs.youremailapi.com/docs/getting-started)
@@ -14,7 +14,7 @@ composer require youremailapi/php-sdk
 
 ## Start using it
 
-How to send and email:
+How to send an email:
 
 ```php
 use Youremailapi\PhpSdk\DataTransferObjects\Email\SendRequestDTO;
