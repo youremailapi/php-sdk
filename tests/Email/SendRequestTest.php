@@ -2,9 +2,9 @@
 
 namespace Youremailapi\PhpSdk\Tests\Email;
 
+use PHPUnit\Framework\TestCase;
 use Youremailapi\PhpSdk\Tests\Constants;
 use Youremailapi\PhpSdk\Email\SendRequest;
-use PHPUnit\Framework\TestCase;
 use Youremailapi\PhpSdk\DataTransferObjects\Email\SendRequestDTO;
 
 class SendRequestTest extends TestCase
@@ -19,7 +19,6 @@ class SendRequestTest extends TestCase
         $this->assertTrue($response->getCode() === 201);
         $this->assertIsArray($data->accepted);
         $this->assertContains(Constants::DEFAULT_TO_EMAIL, $data->accepted);
-
     }
 
     public function testMustSendCompleteEmail()
@@ -39,9 +38,26 @@ class SendRequestTest extends TestCase
         $this->assertTrue($response->getCode() === 201);
         $this->assertIsArray($data->accepted);
         $this->assertContains(Constants::DEFAULT_TO_EMAIL, $data->accepted);
-
     }
 
+    public function testMustThrowInvalidArgumentException()
+    {
+
+        $dto = $this->getDto()
+            ->setBcc([
+                'sometestemail@gmail.com'
+            ])
+            ->setReplyTo([
+                'Federico Juretich <fedejuret@gmail.com>'
+            ])
+            ->setTo('INVALID_EMAIL');
+
+        try {
+            $this->getRequest()->send($dto);
+        } catch (\Throwable $th) {
+            $this->assertInstanceOf('InvalidArgumentException', $th);
+        }
+    }
 
     private function getDto(): SendRequestDTO
     {
@@ -60,5 +76,4 @@ class SendRequestTest extends TestCase
     {
         return new SendRequest(Constants::APIKEY);
     }
-
 }
