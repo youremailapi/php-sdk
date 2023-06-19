@@ -2,10 +2,10 @@
 
 namespace Youremailapi\PhpSdk\Email;
 
+use InvalidArgumentException;
 use Youremailapi\PhpSdk\Response;
 use Youremailapi\PhpSdk\Constants;
 use Youremailapi\PhpSdk\HttpRequest;
-use http\Exception\InvalidArgumentException;
 use Youremailapi\PhpSdk\DataTransferObjects\Email\SendRequestDTO;
 
 class SendRequest

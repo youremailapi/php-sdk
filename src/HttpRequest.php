@@ -96,7 +96,9 @@ final class HttpRequest
      */
     private function close(): void
     {
-        curl_close($this->curl);
+        if ($this->curl !== null) {
+            curl_close($this->curl);
+        }
     }
 
     /**
