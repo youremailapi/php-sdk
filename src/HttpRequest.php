@@ -2,6 +2,9 @@
 
 namespace Youremailapi\PhpSdk;
 
+/**
+ * @author Federico Juretich <fedejuret@gmail.com>
+ */
 final class HttpRequest
 {
 

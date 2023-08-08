@@ -6,9 +6,12 @@ use InvalidArgumentException;
 use Youremailapi\PhpSdk\Response;
 use Youremailapi\PhpSdk\Constants;
 use Youremailapi\PhpSdk\HttpRequest;
-use Youremailapi\PhpSdk\DataTransferObjects\Email\SendRequestDTO;
+use Youremailapi\PhpSdk\DataTransferObjects\Email\SendEmailDTO;
 
-class SendRequest
+/**
+ * @author Federico Juretich <fedejuret@gmail.com>
+ */
+class SendEmail
 {
 
     private string $apikey;
@@ -20,7 +23,7 @@ class SendRequest
         $this->apikey = $apikey;
     }
 
-    public function send(SendRequestDTO $sendRequestDTO): Response
+    public function send(SendEmailDTO $sendRequestDTO): Response
     {
         $client = new HttpRequest(Constants::API_BASE_URL, [
             'headers' => [
@@ -55,5 +58,4 @@ class SendRequest
             'apikey' => $this->apikey
         ]);
     }
-
 }
