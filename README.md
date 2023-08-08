@@ -17,13 +17,13 @@ composer require youremailapi/php-sdk
 How to send an email:
 
 ```php
-use Youremailapi\PhpSdk\DataTransferObjects\Email\SendRequestDTO;
-use Youremailapi\PhpSdk\Email\SendRequest;
+use Youremailapi\PhpSdk\DataTransferObjects\Email\SendEmailDTO;
+use Youremailapi\PhpSdk\Email\SendEmail;
 
-$sendEmail = new SendRequest('<YOUR API KEY>');
+$sendEmail = new SendEmail('<YOUR API KEY>');
 
 $sendEmail->send(
-    (new SendRequestDTO())
+    (new SendEmailDTO())
         ->setTo('contact@youremailapi.com')
         ->setVariables([
             '%example%' => 'Some text here'
