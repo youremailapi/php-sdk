@@ -2,6 +2,9 @@
 
 namespace Youremailapi\PhpSdk;
 
+/**
+ * @author Federico Juretich <fedejuret@gmail.com>
+ */
 class Response
 {
 
@@ -23,5 +26,4 @@ class Response
     {
         return $array ? json_decode($this->data, true) : json_decode($this->data);
     }
-
 }

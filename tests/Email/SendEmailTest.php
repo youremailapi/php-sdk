@@ -3,11 +3,11 @@
 namespace Youremailapi\PhpSdk\Tests\Email;
 
 use PHPUnit\Framework\TestCase;
+use Youremailapi\PhpSdk\Email\SendEmail;
 use Youremailapi\PhpSdk\Tests\Constants;
-use Youremailapi\PhpSdk\Email\SendRequest;
-use Youremailapi\PhpSdk\DataTransferObjects\Email\SendRequestDTO;
+use Youremailapi\PhpSdk\DataTransferObjects\Email\SendEmailDTO;
 
-class SendRequestTest extends TestCase
+class SendEmailTest extends TestCase
 {
 
     public function testMustSendSimpleMail()
@@ -59,9 +59,9 @@ class SendRequestTest extends TestCase
         }
     }
 
-    private function getDto(): SendRequestDTO
+    private function getDto(): SendEmailDTO
     {
-        return (new SendRequestDTO())
+        return (new SendEmailDTO())
             ->setTemplate(Constants::DEFAULT_TEMPLATE)
             ->setSmtpAccount(Constants::DEFAULT_SMTP_ACCOUNT)
             ->setTo(Constants::DEFAULT_TO_EMAIL)
@@ -72,8 +72,8 @@ class SendRequestTest extends TestCase
             ]);
     }
 
-    private function getRequest(): SendRequest
+    private function getRequest(): SendEmail
     {
-        return new SendRequest(Constants::APIKEY);
+        return new SendEmail(Constants::APIKEY);
     }
 }

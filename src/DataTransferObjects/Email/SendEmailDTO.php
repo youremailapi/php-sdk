@@ -2,7 +2,10 @@
 
 namespace Youremailapi\PhpSdk\DataTransferObjects\Email;
 
-class SendRequestDTO
+/**
+ * @author Federico Juretich <fedejuret@gmail.com>
+ */
+class SendEmailDTO
 {
     private string $template;
     private string $smtpAccount;
@@ -22,9 +25,9 @@ class SendRequestDTO
 
     /**
      * @param string $template
-     * @return SendRequestDTO
+     * @return SendEmailDTO
      */
-    public function setTemplate(string $template): SendRequestDTO
+    public function setTemplate(string $template): SendEmailDTO
     {
         $this->template = $template;
         return $this;
@@ -40,9 +43,9 @@ class SendRequestDTO
 
     /**
      * @param string $smtpAccount
-     * @return SendRequestDTO
+     * @return SendEmailDTO
      */
-    public function setSmtpAccount(string $smtpAccount): SendRequestDTO
+    public function setSmtpAccount(string $smtpAccount): SendEmailDTO
     {
         $this->smtpAccount = $smtpAccount;
         return $this;
@@ -58,9 +61,9 @@ class SendRequestDTO
 
     /**
      * @param string $subject
-     * @return SendRequestDTO
+     * @return SendEmailDTO
      */
-    public function setSubject(string $subject): SendRequestDTO
+    public function setSubject(string $subject): SendEmailDTO
     {
         $this->subject = $subject;
         return $this;
@@ -76,9 +79,9 @@ class SendRequestDTO
 
     /**
      * @param string $to
-     * @return SendRequestDTO
+     * @return SendEmailDTO
      */
-    public function setTo(string $to): SendRequestDTO
+    public function setTo(string $to): SendEmailDTO
     {
         $this->to = $to;
         return $this;
@@ -94,9 +97,9 @@ class SendRequestDTO
 
     /**
      * @param array|null $variables
-     * @return SendRequestDTO
+     * @return SendEmailDTO
      */
-    public function setVariables(?array $variables): SendRequestDTO
+    public function setVariables(?array $variables): SendEmailDTO
     {
         $this->variables = $variables;
         return $this;
@@ -112,9 +115,9 @@ class SendRequestDTO
 
     /**
      * @param array|null $bcc
-     * @return SendRequestDTO
+     * @return SendEmailDTO
      */
-    public function setBcc(?array $bcc): SendRequestDTO
+    public function setBcc(?array $bcc): SendEmailDTO
     {
         $this->bcc = $bcc;
         return $this;
@@ -130,9 +133,9 @@ class SendRequestDTO
 
     /**
      * @param array|null $replyTo
-     * @return SendRequestDTO
+     * @return SendEmailDTO
      */
-    public function setReplyTo(?array $replyTo): SendRequestDTO
+    public function setReplyTo(?array $replyTo): SendEmailDTO
     {
         $this->replyTo = $replyTo;
         return $this;
