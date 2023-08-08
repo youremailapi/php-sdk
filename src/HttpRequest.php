@@ -2,10 +2,12 @@
 
 namespace Youremailapi\PhpSdk;
 
+use InvalidArgumentException;
+
 /**
  * @author Federico Juretich <fedejuret@gmail.com>
  */
-final class HttpRequest
+class HttpRequest
 {
 
     private $curl;
@@ -27,13 +29,19 @@ final class HttpRequest
      * Send POST request
      *
      * @param string $path Path to request
-     * @param array $data Data to send
+     * @param ?array $data Data to send
      * @param array $headers Headers to send
+     * @param ?array $files
      *
+     * @throws InvalidArgumentException
+     * 
      * @return Response
      */
-    public function post(string $path, array $data, array $headers = []): Response
+    public function post(string $path, ?array $data = null, array $headers = [], ?array $files = null): Response
     {
+        if ($data === null && $files === null) {
+            throw new InvalidArgumentException("Must send data or files");
+        }
 
         if (!empty($headers)) {
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
@@ -41,8 +49,28 @@ final class HttpRequest
 
         $this->curl = curl_init($this->baseUri . $path);
 
-        curl_setopt($this->curl, CURLOPT_POST, true);
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
+        $formData = [];
+
+        if ($data !== null) {
+            foreach ($data as $key => $value) {
+                $formData[$key] = $value;
+            }
+        }
+
+        if (!empty($files)) {
+            foreach ($files as $key => $filePath) {
+                $formData[$key][] = new \CURLFile($filePath);
+            }
+        }
+
+        if (
+            isset($this->options['headers']['Content-Type'])
+            && $this->options['headers']['Content-Type'] === 'application/json'
+        ) {
+            $formData = json_encode($formData);
+        }
+
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $formData);
 
         return $this->makeRequest();
     }
@@ -75,11 +103,42 @@ final class HttpRequest
     }
 
     /**
+     * Send DELETE request with body
+     *
+     * @param string $path Path to request
+     * @param ?array $data Data to send in the request body
+     * @param array $headers Headers to send
+     *
+     * @return Response
+     */
+    public function delete(string $path, ?array $data = null, array $headers = []): Response
+    {
+        if (!empty($headers)) {
+            $this->options['headers'] = array_merge($this->options['headers'], $headers);
+        }
+
+        $this->curl = curl_init($this->baseUri . $path);
+
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+
+        if (
+            isset($this->options['headers']['Content-Type'])
+            && $this->options['headers']['Content-Type'] === 'application/json'
+        ) {
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
+        } else {
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+
+        return $this->makeRequest();
+    }
+
+    /**
      * Get headers to send
      *
      * @return array
      */
-    public function getHeaders(): array
+    private function getHeaders(): array
     {
         $headers = [];
 
