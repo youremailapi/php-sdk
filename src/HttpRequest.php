@@ -2,6 +2,7 @@
 
 namespace Youremailapi\PhpSdk;
 
+use GuzzleHttp\Client;
 use InvalidArgumentException;
 
 /**
@@ -10,7 +11,6 @@ use InvalidArgumentException;
 class HttpRequest
 {
 
-    private $curl;
     private string $baseUri;
     private array $options;
 
@@ -18,11 +18,6 @@ class HttpRequest
     {
         $this->baseUri = $baseUri;
         $this->options = $options;
-    }
-
-    public function __destruct()
-    {
-        $this->close();
     }
 
     /**
@@ -47,32 +42,32 @@ class HttpRequest
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 
-        $this->curl = curl_init($this->baseUri . $path);
-
         $formData = [];
 
         if ($data !== null) {
             foreach ($data as $key => $value) {
                 $formData[$key] = $value;
             }
+
+            $data = [
+                'json' => $formData
+            ];
         }
 
         if (!empty($files)) {
             foreach ($files as $key => $filePath) {
-                $formData[$key][] = new \CURLFile($filePath);
+                $formData[] = [
+                    'name'     => 'files',
+                    'contents' => file_get_contents($filePath),
+                ];
             }
+
+            $data = [
+                'multipart' => $formData
+            ];
         }
 
-        if (
-            isset($this->options['headers']['Content-Type'])
-            && $this->options['headers']['Content-Type'] === 'application/json'
-        ) {
-            $formData = json_encode($formData);
-        }
-
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $formData);
-
-        return $this->makeRequest();
+        return $this->makeRequest($path, 'post', $data);
     }
 
     /**
@@ -91,15 +86,9 @@ class HttpRequest
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 
-        $url = $this->baseUri . $path;
-
-        if (!empty($query)) {
-            $url .= '?' . http_build_query($query);
-        }
-
-        $this->curl = curl_init($url);
-
-        return $this->makeRequest();
+        return $this->makeRequest($path, 'get', [
+            'query' => $query
+        ]);
     }
 
     /**
@@ -117,68 +106,24 @@ class HttpRequest
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 
-        $this->curl = curl_init($this->baseUri . $path);
-
-        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-
-        if (
-            isset($this->options['headers']['Content-Type'])
-            && $this->options['headers']['Content-Type'] === 'application/json'
-        ) {
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
-        } else {
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        }
-
-        return $this->makeRequest();
-    }
-
-    /**
-     * Get headers to send
-     *
-     * @return array
-     */
-    private function getHeaders(): array
-    {
-        $headers = [];
-
-        if (isset($this->options['headers'])) {
-            foreach ($this->options['headers'] as $key => $value) {
-                $headers[] = "{$key}: {$value}";
-            }
-        }
-
-        return array_values($headers);
-    }
-
-    /**
-     * Close curl connection
-     *
-     * @return void
-     */
-    private function close(): void
-    {
-        if ($this->curl !== null) {
-            curl_close($this->curl);
-        }
+        return $this->makeRequest($path, 'delete', [
+            'json' => $data
+        ]);
     }
 
     /**
      * @return Response
      */
-    private function makeRequest(): Response
+    private function makeRequest(string $path, string $method, array $options): Response
     {
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, false);
+        $client = new Client([
+            'base_uri' => $this->baseUri,
+            'headers' => $this->options['headers']
+        ]);
 
-        if (isset($this->options['headers'])) {
-            curl_setopt($this->curl, CURLOPT_HTTPHEADER, $this->getHeaders());
-        }
+        /** @var \Psr\Http\Message\ResponseInterface */
+        $response = $client->{$method}($path, $options);
 
-        $response = curl_exec($this->curl);
-        $code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
-
-        return new Response($code, $response);
+        return new Response($response->getStatusCode(), $response->getBody()->getContents());
     }
 }
