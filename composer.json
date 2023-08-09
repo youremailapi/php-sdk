@@ -24,7 +24,8 @@
     "php": "^7.4 | ^8.0",
     "ext-json": "*",
     "ext-curl": "*",
-    "ext-http": "*"
+    "ext-http": "*",
+    "guzzlehttp/guzzle": "^7.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^10.2"
