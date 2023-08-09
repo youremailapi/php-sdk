@@ -55,11 +55,13 @@ class HttpRequest
         }
 
         if (!empty($files)) {
-            foreach ($files as $key => $filePath) {
-                $formData[] = [
-                    'name'     => 'files',
-                    'contents' => file_get_contents($filePath),
-                ];
+            foreach ($files as $key => $filesPaths) {
+                foreach ($filesPaths as $filePath) {
+                    $formData[] = [
+                        'name'     => $key,
+                        'contents' => fopen($filePath, 'r'),
+                    ];
+                }
             }
 
             $data = [
@@ -118,7 +120,8 @@ class HttpRequest
     {
         $client = new Client([
             'base_uri' => $this->baseUri,
-            'headers' => $this->options['headers']
+            'headers' => $this->options['headers'],
+            'http_errors' => false,
         ]);
 
         /** @var \Psr\Http\Message\ResponseInterface */
