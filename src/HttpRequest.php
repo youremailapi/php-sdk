@@ -25,20 +25,20 @@ class HttpRequest
      *
      * @param string $path Path to request
      * @param ?array $data Data to send
-     * @param array $headers Headers to send
+     * @param ?array $headers Headers to send
      * @param ?array $files
      *
      * @throws InvalidArgumentException
      * 
      * @return Response
      */
-    public function post(string $path, ?array $data = null, array $headers = [], ?array $files = null): Response
+    public function post(string $path, ?array $data = null, ?array $headers = [], ?array $files = null): Response
     {
         if ($data === null && $files === null) {
             throw new InvalidArgumentException("Must send data or files");
         }
 
-        if (!empty($headers)) {
+        if ($headers !== null && !empty($headers)) {
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 
@@ -77,14 +77,14 @@ class HttpRequest
      *
      * @param string $path Path to request
      * @param ?array $query Query to send
-     * @param array $headers Headers to send
+     * @param ?array $headers Headers to send
      *
      * @return Response
      */
-    public function get(string $path, ?array $query = [], array $headers = []): Response
+    public function get(string $path, ?array $query = [], ?array $headers = []): Response
     {
 
-        if (!empty($headers)) {
+        if ($headers !== null && !empty($headers)) {
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 
@@ -98,13 +98,13 @@ class HttpRequest
      *
      * @param string $path Path to request
      * @param ?array $data Data to send in the request body
-     * @param array $headers Headers to send
+     * @param ?array $headers Headers to send
      *
      * @return Response
      */
-    public function delete(string $path, ?array $data = null, array $headers = []): Response
+    public function delete(string $path, ?array $data = null, ?array $headers = []): Response
     {
-        if (!empty($headers)) {
+        if ($headers !== null && !empty($headers)) {
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 

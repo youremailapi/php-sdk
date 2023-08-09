@@ -13,16 +13,15 @@ use Youremailapi\PhpSdk\Exceptions\FileNotFoundException;
 class Attachments
 {
 
-    private string $apikey;
     private string $path = 'files';
     private HttpRequest $client;
 
     public function __construct(string $apikey)
     {
-        $this->apikey = $apikey;
         $this->client = new HttpRequest(Constants::API_BASE_URL, [
             'headers' => [
-                'Content-Type' => 'multipart/form-data'
+                'Content-Type' => 'multipart/form-data',
+                'apikey' => $apikey
             ]
         ]);
     }
@@ -43,9 +42,7 @@ class Attachments
         return $this->client->post(
             $this->path,
             null,
-            [
-                'apikey' => $this->apikey
-            ],
+            null,
             [
                 "files" => $filesPaths
             ]
