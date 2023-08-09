@@ -21,9 +21,7 @@ class AttachmentsTest extends TestCase
             ->with(
                 $this->equalTo("files"),
                 $this->isNull(),
-                $this->equalTo([
-                    'apikey' => "SOME_API_KEY"
-                ]),
+                $this->isNull(),
                 $this->equalTo([
                     "files" => [
                         __DIR__ . '/../../README.md'
