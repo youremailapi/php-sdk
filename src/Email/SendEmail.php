@@ -40,6 +40,7 @@ class SendEmail
             'smtp_account' => $sendRequestDTO->getSmtpAccount(),
             'subject' => $sendRequestDTO->getSubject(),
             'to' => $sendRequestDTO->getTo(),
+            'async' => $sendRequestDTO->isAsync(),
         ];
 
         if (null !== $sendRequestDTO->getBcc()) {

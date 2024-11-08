@@ -14,6 +14,7 @@ class SendEmailDTO
     private ?array $variables = null;
     private ?array $bcc = null;
     private ?array $replyTo = null;
+    private bool $async = false;
 
     /**
      * @return string
@@ -140,4 +141,24 @@ class SendEmailDTO
         $this->replyTo = $replyTo;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isAsync(): bool
+    {
+        return $this->async;
+    }
+
+    /**
+     * @param bool $async
+     * @return $this
+     */
+    public function setAsync(bool $async): SendEmailDTO
+    {
+        $this->async = $async;
+        return $this;
+    }
+
+
 }

@@ -4,6 +4,7 @@ namespace Youremailapi\PhpSdk;
 
 use GuzzleHttp\Client;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author Federico Juretich <fedejuret@gmail.com>
@@ -38,7 +39,7 @@ class HttpRequest
             throw new InvalidArgumentException("Must send data or files");
         }
 
-        if ($headers !== null && !empty($headers)) {
+        if (!empty($headers)) {
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 
@@ -84,7 +85,7 @@ class HttpRequest
     public function get(string $path, ?array $query = [], ?array $headers = []): Response
     {
 
-        if ($headers !== null && !empty($headers)) {
+        if (!empty($headers)) {
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 
@@ -104,7 +105,7 @@ class HttpRequest
      */
     public function delete(string $path, ?array $data = null, ?array $headers = []): Response
     {
-        if ($headers !== null && !empty($headers)) {
+        if (!empty($headers)) {
             $this->options['headers'] = array_merge($this->options['headers'], $headers);
         }
 
@@ -114,6 +115,9 @@ class HttpRequest
     }
 
     /**
+     * @param string $path
+     * @param string $method
+     * @param array $options
      * @return Response
      */
     private function makeRequest(string $path, string $method, array $options): Response
@@ -124,7 +128,7 @@ class HttpRequest
             'http_errors' => false,
         ]);
 
-        /** @var \Psr\Http\Message\ResponseInterface */
+        /** @var ResponseInterface $response */
         $response = $client->{$method}($path, $options);
 
         return new Response($response->getStatusCode(), $response->getBody()->getContents());
